@@ -18,6 +18,8 @@ CGFloat const BannerViewAnimationDuration = 0.25;
 @interface TBABannerViewController() <ADBannerViewDelegate>
 @property (nonatomic, strong, readwrite) UIViewController *contentViewController;
 @property (nonatomic, strong, readwrite) ADBannerView *bannerView;
+@property (nonatomic, assign, readwrite) BOOL shouldShowBannerView;
+
 @end
 
 @implementation TBABannerViewController
@@ -28,6 +30,7 @@ CGFloat const BannerViewAnimationDuration = 0.25;
     self = [super init];
     if (self) {
         self.contentViewController = contentViewController;
+        self.shouldShowBannerView = NO;
     }
     return self;
 }
@@ -39,19 +42,8 @@ CGFloat const BannerViewAnimationDuration = 0.25;
     
     // Banenr view
     self.bannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-    [self.view addSubview:self.bannerView];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     self.bannerView.delegate = self;
-    [self updateLayout:0.0];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    self.bannerView.delegate = nil;
-    [self updateLayout:0.0];
+    [self.view addSubview:self.bannerView];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -59,7 +51,7 @@ CGFloat const BannerViewAnimationDuration = 0.25;
     
     bannerFrame.size = [self.bannerView sizeThatFits:contentFrame.size];
     
-    if (self.bannerView.bannerLoaded && self.view.window) {
+    if (self.bannerView.bannerLoaded && self.view.window && self.shouldShowBannerView) {
         contentFrame.size.height -= bannerFrame.size.height;
         bannerFrame.origin.y = contentFrame.size.height;
     } else {
@@ -68,6 +60,22 @@ CGFloat const BannerViewAnimationDuration = 0.25;
     
     self.contentViewController.view.frame = contentFrame;
     self.bannerView.frame = bannerFrame;
+}
+
+#pragma mark Public
+
+- (void)showBannerView {
+    if (!self.shouldShowBannerView) {
+        self.shouldShowBannerView = YES;
+        [self updateLayout:BannerViewAnimationDuration];
+    }
+}
+
+- (void)hideBannerView {
+    if (self.shouldShowBannerView) {
+        self.shouldShowBannerView = NO;
+        [self updateLayout:BannerViewAnimationDuration];
+    }
 }
 
 #pragma mark Private

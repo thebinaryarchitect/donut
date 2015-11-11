@@ -6,9 +6,12 @@
 //  See LICENSE.txt for more information.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+#import "TBA+iAd.h"
 
-@interface ViewController : UIViewController
+#pragma mark - ViewController
+
+@interface ViewController : TBABannerViewController
 
 
 @end

@@ -26,6 +26,8 @@
  */
 @property (nonatomic, copy, readwrite) void(^actionDidFinishBlock)(ADBannerView *bannerView);
 
+@property (nonatomic, assign, readonly) BOOL shouldShowBannerView;
+
 /**
  *  The designated initializer.
  *
@@ -34,5 +36,15 @@
  *  @return TBABannerViewController or nil.
  */
 - (instancetype)initWithContentViewController:(UIViewController *)contentViewController;
+
+/**
+ *  Animates the banner view into view.
+ */
+- (void)showBannerView;
+
+/**
+ *  Animates the banner view out of view.
+ */
+- (void)hideBannerView;
 
 @end
