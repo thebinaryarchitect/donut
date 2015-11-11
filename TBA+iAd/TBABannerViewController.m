@@ -10,6 +10,11 @@
 
 #pragma mark - TBABannerViewController
 
+/**
+ *  Duration for the banner view animation.
+ */
+CGFloat const BannerViewAnimationDuration = 0.25;
+
 @interface TBABannerViewController() <ADBannerViewDelegate>
 @property (nonatomic, strong, readwrite) UIViewController *contentViewController;
 @property (nonatomic, strong, readwrite) ADBannerView *bannerView;
@@ -72,6 +77,29 @@
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     }];
+}
+
+#pragma mark ADBannerViewDelegate
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    [self updateLayout:BannerViewAnimationDuration];
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    [self updateLayout:BannerViewAnimationDuration];
+}
+
+- (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave {
+    if (self.actionShouldBeginBlock) {
+        self.actionShouldBeginBlock(banner, willLeave);
+    }
+    return YES;
+}
+
+- (void)bannerViewActionDidFinish:(ADBannerView *)banner {
+    if (self.actionDidFinishBlock) {
+        self.actionDidFinishBlock(banner);
+    }
 }
 
 @end

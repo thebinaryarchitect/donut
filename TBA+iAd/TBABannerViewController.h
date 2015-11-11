@@ -17,6 +17,16 @@
 @interface TBABannerViewController : UIViewController
 
 /**
+ *  Called when the bannerViewActionShouldBegin:willLeaveApplication: delegate method is called.
+ */
+@property (nonatomic, copy, readwrite) void(^actionShouldBeginBlock)(ADBannerView *bannerView, BOOL willLeaveApplication);
+
+/**
+ *  Called when the bannerViewActionDidFinish: delegate method is called.
+ */
+@property (nonatomic, copy, readwrite) void(^actionDidFinishBlock)(ADBannerView *bannerView);
+
+/**
  *  The designated initializer.
  *
  *  @param contentViewController The content view controller.
