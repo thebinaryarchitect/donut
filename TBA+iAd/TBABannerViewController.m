@@ -10,8 +10,9 @@
 
 #pragma mark - TBABannerViewController
 
-@interface TBABannerViewController()
+@interface TBABannerViewController() <ADBannerViewDelegate>
 @property (nonatomic, strong, readwrite) UIViewController *contentViewController;
+@property (nonatomic, strong, readwrite) ADBannerView *bannerView;
 @end
 
 @implementation TBABannerViewController
@@ -24,6 +25,53 @@
         self.contentViewController = contentViewController;
     }
     return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.view addSubview:self.contentViewController.view];
+    
+    // Banenr view
+    self.bannerView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
+    [self.view addSubview:self.bannerView];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.bannerView.delegate = self;
+    [self updateLayout:0.0];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.bannerView.delegate = nil;
+    [self updateLayout:0.0];
+}
+
+- (void)viewDidLayoutSubviews {
+    CGRect contentFrame = self.view.bounds, bannerFrame = CGRectZero;
+    
+    bannerFrame.size = [self.bannerView sizeThatFits:contentFrame.size];
+    
+    if (self.bannerView.bannerLoaded && self.view.window) {
+        contentFrame.size.height -= bannerFrame.size.height;
+        bannerFrame.origin.y = contentFrame.size.height;
+    } else {
+        bannerFrame.origin.y = contentFrame.size.height;
+    }
+    
+    self.contentViewController.view.frame = contentFrame;
+    self.bannerView.frame = bannerFrame;
+}
+
+#pragma mark Private
+
+- (void)updateLayout:(CGFloat)duration {
+    [UIView animateWithDuration:duration animations:^{
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    }];
 }
 
 @end
