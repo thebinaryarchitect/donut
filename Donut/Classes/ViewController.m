@@ -37,10 +37,10 @@
 
 - (void)toggleBannerView:(UIBarButtonItem *)item {
     if (self.shouldShowBannerView) {
-        [self hideBannerView];
+        [self hideBannerView:YES];
         item.title = @"Show Banner View";
     } else {
-        [self showBannerView];
+        [self showBannerView:YES];
         item.title = @"Hide Banner View";
     }
 }

@@ -64,17 +64,17 @@ CGFloat const BannerViewAnimationDuration = 0.25;
 
 #pragma mark Public
 
-- (void)showBannerView {
+- (void)showBannerView:(BOOL)animated {
     if (!self.shouldShowBannerView) {
         self.shouldShowBannerView = YES;
-        [self updateLayout:BannerViewAnimationDuration];
+        [self updateLayout:animated ? BannerViewAnimationDuration : 0.0];
     }
 }
 
-- (void)hideBannerView {
+- (void)hideBannerView:(BOOL)animated {
     if (self.shouldShowBannerView) {
         self.shouldShowBannerView = NO;
-        [self updateLayout:BannerViewAnimationDuration];
+        [self updateLayout:animated ? BannerViewAnimationDuration : 0.0];
     }
 }
 

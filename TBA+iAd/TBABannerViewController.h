@@ -39,12 +39,16 @@
 
 /**
  *  Animates the banner view into view.
+ *
+ *  @param animated YES to animate.
  */
-- (void)showBannerView;
+- (void)showBannerView:(BOOL)animated;
 
 /**
  *  Animates the banner view out of view.
+ *
+ *  @param animated YES to animate.
  */
-- (void)hideBannerView;
+- (void)hideBannerView:(BOOL)animated;
 
 @end
